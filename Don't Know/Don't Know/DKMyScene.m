@@ -9,11 +9,15 @@
 // TODO: put in physics for the ball
 // TODO: use AI to control the top paddle
 // TODO: put in iADS at the top for above the computer's side
-// TODO: 
+// TODO:
 #import "DKMyScene.h"
 SKSpriteNode *computer;
 SKSpriteNode *player;
 SKSpriteNode *ball;
+BOOL startMove;
+int directionFrom;
+int directionTo;
+int movement;
 CGRect screenRect;
 @implementation DKMyScene
 @synthesize myBannerView = _myBannerView;
@@ -38,27 +42,26 @@ CGRect screenRect;
         [UIView commitAnimations];
         self.bannerIsNotVisible = YES;
     }
-
-
+    
+    
 }
 
 #pragma mark - end of my Method
 
--(id)initWithSize:(CGSize)size {    
+-(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
         
         self.backgroundColor = [SKColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
         
-         screenRect= [[UIScreen mainScreen] bounds];
+        screenRect= [[UIScreen mainScreen] bounds];
         _myBannerView.tag = 5;
-       
+        
         _myBannerView.frame = CGRectMake(0,30, self.frame.size.width, 70);
         _myBannerView = [[ADBannerView alloc]init];
-         _myBannerView.delegate = self;
+        _myBannerView.delegate = self;
         _bannerIsNotVisible = NO;
-        float sizeOfBanner = _myBannerView.frame.size.height;
-        NSLog(@"sizeofbanner height %f", _myBannerView.frame.size.height);
+       
         player   = [SKSpriteNode spriteNodeWithImageNamed:@"playerPaddle"];
         computer = [SKSpriteNode spriteNodeWithImageNamed:@"computerPaddle"];
         ball     = [SKSpriteNode spriteNodeWithImageNamed:@"greenBall"];
@@ -66,9 +69,6 @@ CGRect screenRect;
         player.position   = CGPointMake(screenRect.size.width/2, 50);
         ball.position     = CGPointMake(screenRect.size.width/2, screenRect.size.height  /2);
         computer.position = CGPointMake(screenRect.size.width/2, screenRect.size.height- (_myBannerView.frame.size.height + 50));
-        NSLog(@"screenrect.size.height = %f", screenRect.size.height);
-        //player.anchorPoint = CGPointMake(0,0);
-        //computer.anchorPoint = CGPointMake(0,0);
         ball.xScale = 0.70;
         ball.yScale = 0.70;
         [self addChild:player];
@@ -78,19 +78,51 @@ CGRect screenRect;
     }
     return self;
 }
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    directionFrom = 0;
+    directionTo   = 0;
+}
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
+    directionFrom = 0;
+    directionTo   = 0;
+}
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
     
-    for (UITouch *touch in touches) {
-        CGPoint location = [touch locationInNode:self];
-        
-
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [touch locationInNode:self];
+    if ([player containsPoint:location]) {
+         directionFrom = location.x;
     }
+   
+    
+}
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [touch locationInNode:self];
+    if ([player containsPoint:location]) {
+        directionTo = location.x;
+        if (directionFrom - directionTo < 0) {
+            player.position = CGPointMake(directionFrom+6, 50);
+            directionFrom = directionFrom + 6;
+        }else{
+            player.position = CGPointMake(directionFrom - 6, 50);
+            directionFrom = directionFrom - 6;
+        }
+        
+    }
+    
+    
+    
+    
+    
+    
 }
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+    
 }
 
 @end
