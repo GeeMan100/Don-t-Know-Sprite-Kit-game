@@ -12,9 +12,11 @@
 SKSpriteNode *computer;
 SKSpriteNode *player;
 SKSpriteNode *ball;
+SKLabelNode *myLabelTime;
 BOOL startMove;
 int directionFrom;
 int directionTo;
+static int myTime;
 int movement;
 CGRect screenRect;
 #pragma mark - imported
@@ -141,7 +143,13 @@ static const uint32_t bottomEdgeCategory = 16;
         self.physicsWorld.gravity         = CGVectorMake(0, 0);
         self.physicsWorld.contactDelegate = self;
         
-        
+        myLabelTime = [[SKLabelNode alloc]initWithFontNamed:@"Helvetica"];
+        myLabelTime.name = @"NewGame";
+        //myLabelTime.text = @"New Game";
+        myLabelTime.fontSize = 25;
+        myLabelTime.fontColor = [SKColor redColor];
+        myLabelTime.position = CGPointMake(screenRect.size.width - 50, screenRect.size.height - 100);
+        [self addChild:myLabelTime];
         
     }
     return self;
@@ -168,10 +176,29 @@ static const uint32_t bottomEdgeCategory = 16;
     
     
 }
+- (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast {
+    
+    self.lastSpawnTimeInterval += timeSinceLast;
+    if (self.lastSpawnTimeInterval > 1) {
+        self.lastSpawnTimeInterval = 0;
+        myTime += 1;
+        //[self addMonster];
+        myLabelTime.text =  [NSString stringWithFormat:@"%d",myTime];
+    }
+}
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+    // Handle time delta.
+    // If we drop below 60fps, we still want everything to move the same distance.
+    CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval;
+    self.lastUpdateTimeInterval = currentTime;
+    if (timeSinceLast > 1) { // more than a second since last update
+        timeSinceLast = 1.0 / 60.0;
+        self.lastUpdateTimeInterval = currentTime;
+    }
     
+    [self updateWithTimeSinceLastUpdate:timeSinceLast];
 }
 
 @end

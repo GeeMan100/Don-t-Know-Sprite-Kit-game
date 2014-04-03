@@ -12,4 +12,6 @@
 @interface DKMyScene : SKScene <ADBannerViewDelegate, SKPhysicsContactDelegate>
 @property (strong, nonatomic) ADBannerView *myBannerView;
 @property (nonatomic) BOOL bannerIsNotVisible;
+@property (nonatomic) NSTimeInterval lastSpawnTimeInterval;
+@property (nonatomic) NSTimeInterval lastUpdateTimeInterval;
 @end
