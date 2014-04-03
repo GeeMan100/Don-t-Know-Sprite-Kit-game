@@ -19,9 +19,10 @@
     SKView * skView = (SKView *)self.view;
     skView.showsFPS = YES;
     skView.showsNodeCount = YES;
-    
+    //skView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 60);
     // Create and configure the scene.
     SKScene * scene = [DKMyScene sceneWithSize:skView.bounds.size];
+    NSLog(@"skview.bounds.size = %g", skView.bounds.size.height);
     scene.scaleMode = SKSceneScaleModeAspectFill;
     
     // Present the scene.

@@ -5,11 +5,9 @@
 //  Created by Gurmit Singh on 03/04/2014.
 //  Copyright (c) 2014 RuleOnSix. All rights reserved.
 //
-// TODO: add in a ball and two paddles
-// TODO: put in physics for the ball
+
 // TODO: use AI to control the top paddle
-// TODO: put in iADS at the top for above the computer's side
-// TODO:
+
 #import "DKMyScene.h"
 SKSpriteNode *computer;
 SKSpriteNode *player;
@@ -19,18 +17,26 @@ int directionFrom;
 int directionTo;
 int movement;
 CGRect screenRect;
+#pragma mark - imported
+static const uint32_t ballCategory       = 1; // 00000000000000000000000000000001
+static const uint32_t computerCategory   = 2; // 00000000000000000000000000000010
+static const uint32_t playerCategory     = 4; // 00000000000000000000000000000100
+static const uint32_t edgeCategory       = 8; // 00000000000000000000000000001000
+static const uint32_t bottomEdgeCategory = 16;
+#pragma mark - end import
+
 @implementation DKMyScene
-@synthesize myBannerView = _myBannerView;
-@synthesize bannerIsNotVisible = _bannerIsNotVisible;
+@synthesize myBannerView                 = _myBannerView;
+@synthesize bannerIsNotVisible           = _bannerIsNotVisible;
 #pragma mark - my Methods
 -(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error{
     if (self.bannerIsNotVisible)
     {
         [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
         // Assumes the banner view is placed at the bottom of the screen.
-        banner.frame = CGRectOffset(banner.frame, 0, 0);
+        banner.frame                     = CGRectOffset(banner.frame, 0, 0);
         [UIView commitAnimations];
-        self.bannerIsNotVisible = NO;
+        self.bannerIsNotVisible          = NO;
     }
 }
 -(void)bannerViewDidLoadAd:(ADBannerView *)banner{
@@ -38,83 +44,126 @@ CGRect screenRect;
     {
         [UIView beginAnimations:@"animateAdBannerOn" context:NULL];
         // Assumes the banner view is just off the bottom of the screen.
-        banner.frame = CGRectOffset(banner.frame, 0, 0);
+        banner.frame                     = CGRectOffset(banner.frame, 0, 0);
         [UIView commitAnimations];
-        self.bannerIsNotVisible = YES;
+        self.bannerIsNotVisible          = YES;
     }
     
     
 }
-
+- (void)addBall:(CGSize)size {
+    // create a new sprite node from an image
+    ball                                 = [SKSpriteNode spriteNodeWithImageNamed         :@"greenBall"];
+    
+    // create a CGPoint for position
+    CGPoint myPoint                      = CGPointMake(size.width/2,size.height/2);
+    ball.position                        = myPoint;
+    
+    // add a physics body
+    ball.physicsBody                     = [SKPhysicsBody bodyWithCircleOfRadius:ball.frame.size.width/2];
+    ball.physicsBody.friction            = 0;
+    ball.physicsBody.linearDamping       = 0;
+    ball.physicsBody.restitution         = 1.0f;
+    ball.physicsBody.categoryBitMask     = ballCategory;
+    ball.physicsBody.contactTestBitMask  = computerCategory | playerCategory | bottomEdgeCategory;
+   
+  
+    // ball.physicsBody.collisionBitMask = edgeCategory | brickCategory;
+    ball.xScale                          = 0.70;
+    ball.yScale                          = 0.70;
+    
+    // add the sprite node to the scene
+    [self addChild:ball];
+    
+    // create the vector
+    CGVector myVector                    = CGVectorMake(20, 20);
+    // apply the vector
+    [ball.physicsBody applyImpulse:myVector];
+}
+-(void) addComputer:(CGSize)size  {
+    
+    // create paddle sprite
+    computer                             = [SKSpriteNode spriteNodeWithImageNamed         :@"computerPaddle"];
+    // position it
+    computer.position                    = CGPointMake(screenRect.size.width/2, screenRect.size.height- 70);
+    // add a physics body
+    computer.physicsBody                 = [SKPhysicsBody bodyWithRectangleOfSize:computer.frame.size];
+    // make it static
+    computer.physicsBody.dynamic         = NO;
+    computer.physicsBody.categoryBitMask = computerCategory;
+    
+    
+    // add to scene
+    [self addChild:computer];
+}
+-(void) addPlayer:(CGSize)size  {
+    
+    // create paddle sprite
+    player                              = [SKSpriteNode spriteNodeWithImageNamed:@"playerPaddle"];
+    // position it
+    player.position                     = CGPointMake(size.width/2,50);
+    // add a physics body
+    player.physicsBody                  = [SKPhysicsBody bodyWithRectangleOfSize:player.frame.size];
+    // make it static
+    player.physicsBody.dynamic          = NO;
+    player.physicsBody.categoryBitMask  = playerCategory;
+    
+    
+    // add to scene
+    [self addChild:player];
+}
 #pragma mark - end of my Method
 
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
         
-        self.backgroundColor = [SKColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
+        self.backgroundColor            = [SKColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
         
-        screenRect= [[UIScreen mainScreen] bounds];
-        _myBannerView.tag = 5;
+        screenRect                      = [[UIScreen mainScreen] bounds];
+        _myBannerView.tag               = 5;
         
-        _myBannerView.frame = CGRectMake(0,30, self.frame.size.width, 70);
-        _myBannerView = [[ADBannerView alloc]init];
-        _myBannerView.delegate = self;
-        _bannerIsNotVisible = NO;
-       
-        player   = [SKSpriteNode spriteNodeWithImageNamed:@"playerPaddle"];
-        computer = [SKSpriteNode spriteNodeWithImageNamed:@"computerPaddle"];
-        ball     = [SKSpriteNode spriteNodeWithImageNamed:@"greenBall"];
+        _myBannerView.frame             = CGRectMake(0,0, self.frame.size.width, 70);
+        _myBannerView                   = [[ADBannerView alloc]init];
+        _myBannerView.delegate          = self;
+        _bannerIsNotVisible             = NO;
         
-        player.position   = CGPointMake(screenRect.size.width/2, 50);
-        ball.position     = CGPointMake(screenRect.size.width/2, screenRect.size.height  /2);
-        computer.position = CGPointMake(screenRect.size.width/2, screenRect.size.height- (_myBannerView.frame.size.height + 50));
-        ball.xScale = 0.70;
-        ball.yScale = 0.70;
-        [self addChild:player];
-        [self addChild:computer];
-        [self addChild:ball];
+ 
+        [self addBall       :self.frame.size];
+        [self addPlayer     :self.frame.size];
+        [self addComputer   :self.frame.size];
+        
+        self.physicsBody                 = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+        self.physicsBody.categoryBitMask = edgeCategory;
+        
+        
+        // change gravity settings of the physics world
+        self.physicsWorld.gravity         = CGVectorMake(0, 0);
+        self.physicsWorld.contactDelegate = self;
+        
+        
         
     }
     return self;
 }
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    directionFrom = 0;
-    directionTo   = 0;
-}
--(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-    directionFrom = 0;
-    directionTo   = 0;
-}
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    /* Called when a touch begins */
-    
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInNode:self];
-    if ([player containsPoint:location]) {
-         directionFrom = location.x;
-    }
-   
-    
-}
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInNode:self];
-    if ([player containsPoint:location]) {
-        directionTo = location.x;
-        if (directionFrom - directionTo < 0) {
-            player.position = CGPointMake(directionFrom+6, 50);
-            directionFrom = directionFrom + 6;
-        }else{
-            player.position = CGPointMake(directionFrom - 6, 50);
-            directionFrom = directionFrom - 6;
+    for (UITouch *touch in touches) {
+        CGPoint location                = [touch locationInNode:self];
+        CGPoint newPosition             = CGPointMake(location.x, 50);
+        
+        // stop the paddle from going too far
+        if (newPosition.x               < player.size.width / 2) {
+            newPosition.x               = player.size.width / 2;
+            
+        }
+        if (newPosition.x               > self.size.width - (player.size.width/2)) {
+            newPosition.x               = self.size.width - (player.size.width/2);
+            
         }
         
+        player.position                 = newPosition;
     }
-    
-    
-    
     
     
     

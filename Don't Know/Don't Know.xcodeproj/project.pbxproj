@@ -20,7 +20,6 @@
 		38FF6A2318ED5AB800109256 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38FF6A2118ED5AB800109256 /* Main.storyboard */; };
 		38FF6A2618ED5AB800109256 /* DKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FF6A2518ED5AB800109256 /* DKViewController.m */; };
 		38FF6A2918ED5AB800109256 /* DKMyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FF6A2818ED5AB800109256 /* DKMyScene.m */; };
-		38FF6A2B18ED5AB800109256 /* Spaceship.png in Resources */ = {isa = PBXBuildFile; fileRef = 38FF6A2A18ED5AB800109256 /* Spaceship.png */; };
 		38FF6A2D18ED5AB800109256 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38FF6A2C18ED5AB800109256 /* Images.xcassets */; };
 		38FF6A3418ED5AB800109256 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38FF6A3318ED5AB800109256 /* XCTest.framework */; };
 		38FF6A3518ED5AB800109256 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38FF6A0D18ED5AB800109256 /* Foundation.framework */; };
@@ -60,7 +59,6 @@
 		38FF6A2518ED5AB800109256 /* DKViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DKViewController.m; sourceTree = "<group>"; };
 		38FF6A2718ED5AB800109256 /* DKMyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DKMyScene.h; sourceTree = "<group>"; };
 		38FF6A2818ED5AB800109256 /* DKMyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DKMyScene.m; sourceTree = "<group>"; };
-		38FF6A2A18ED5AB800109256 /* Spaceship.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Spaceship.png; sourceTree = "<group>"; };
 		38FF6A2C18ED5AB800109256 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		38FF6A3218ED5AB800109256 /* Don't KnowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Don't KnowTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		38FF6A3318ED5AB800109256 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -138,7 +136,6 @@
 				38FF6A2518ED5AB800109256 /* DKViewController.m */,
 				38FF6A2718ED5AB800109256 /* DKMyScene.h */,
 				38FF6A2818ED5AB800109256 /* DKMyScene.m */,
-				38FF6A2A18ED5AB800109256 /* Spaceship.png */,
 				38FF6A2C18ED5AB800109256 /* Images.xcassets */,
 				38FF6A1618ED5AB800109256 /* Supporting Files */,
 			);
@@ -258,7 +255,6 @@
 				389BC8F918ED79F0003683A4 /* computerPaddle.png in Resources */,
 				389BC8FC18ED9022003683A4 /* greenBall.png in Resources */,
 				38FF6A2D18ED5AB800109256 /* Images.xcassets in Resources */,
-				38FF6A2B18ED5AB800109256 /* Spaceship.png in Resources */,
 				389BC8FA18ED79F0003683A4 /* playerPaddle.png in Resources */,
 				38FF6A2318ED5AB800109256 /* Main.storyboard in Resources */,
 			);
