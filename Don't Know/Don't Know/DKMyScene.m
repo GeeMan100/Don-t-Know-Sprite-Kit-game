@@ -62,7 +62,7 @@ CGRect screenRect;
         player   = [SKSpriteNode spriteNodeWithImageNamed:@"playerPaddle"];
         computer = [SKSpriteNode spriteNodeWithImageNamed:@"computerPaddle"];
         ball     = [SKSpriteNode spriteNodeWithImageNamed:@"greenBall"];
-        //
+        
         player.position   = CGPointMake(screenRect.size.width/2, 50);
         ball.position     = CGPointMake(screenRect.size.width/2, screenRect.size.height  /2);
         computer.position = CGPointMake(screenRect.size.width/2, screenRect.size.height- (_myBannerView.frame.size.height + 50));
