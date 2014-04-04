@@ -14,6 +14,7 @@
 SKSpriteNode *computer;
 SKSpriteNode *player;
 SKSpriteNode *ball;
+SKSpriteNode *pauseTheGame;
 SKLabelNode *myLabelTime;
 BOOL startMove;
 int directionFrom;
@@ -155,11 +156,12 @@ static const uint32_t topEdgeCategory    = 32;
          [self runAction:playSFX];
         
     }
+   
     
     if (notTheBall.categoryBitMask == bottomEdgeCategory) {
         SKAction *playSFX = [SKAction playSoundFileNamed:@"gameover.caf" waitForCompletion:NO];
         [self runAction:playSFX];
-        EndScene *end = [EndScene sceneWithSize:self.size];
+        SKScene *end = [EndScene sceneWithSize:self.size];
         [self.view presentScene:end transition:[SKTransition flipVerticalWithDuration:0.5]];
         
         
@@ -167,7 +169,7 @@ static const uint32_t topEdgeCategory    = 32;
     if (notTheBall.categoryBitMask == topEdgeCategory) {
         SKAction *playSFX = [SKAction playSoundFileNamed:@"gameover.caf" waitForCompletion:NO];
         [self runAction:playSFX];
-        EndScene *end = [EndScene sceneWithSize:self.size];
+        SKScene *end = [EndScene sceneWithSize:self.size];
         [self.view presentScene:end transition:[SKTransition doorsCloseHorizontalWithDuration:0.5]];
         
     }
@@ -180,7 +182,7 @@ static const uint32_t topEdgeCategory    = 32;
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
         
-        self.backgroundColor            = [SKColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
+        self.backgroundColor            = [SKColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];      // black colour
         myTime                          = 0;
         screenRect                      = [[UIScreen mainScreen] bounds];
         _myBannerView.tag               = 5;
@@ -212,10 +214,38 @@ static const uint32_t topEdgeCategory    = 32;
         myLabelTime.fontColor = [SKColor redColor];
         myLabelTime.position = CGPointMake(screenRect.size.width - 50, screenRect.size.height - 100);
         [self addChild:myLabelTime];
-        
-        
+        pauseTheGame                              = [SKSpriteNode spriteNodeWithImageNamed:@"button_pause"];
+        pauseTheGame.position                     = CGPointMake(screenRect.size.width/7,screenRect.size.height/2);
+        pauseTheGame.xScale                       = 0.25;
+        pauseTheGame.yScale                       = 0.25;
+        pauseTheGame.name                         = @"pauseButtonNode";
+//        pauseTheGame.physicsBody                  = [SKPhysicsBody bodyWithRectangleOfSize:pauseTheGame.frame.size];
+//        pauseTheGame.physicsBody.dynamic          = NO;
+//        //self.scene.view.paused = YES;
+//        pauseTheGame.physicsBody.categoryBitMask  = pauseTheGameCategory;
+        [self addChild:pauseTheGame];
+       
     }
     return self;
+}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [touch locationInNode:self];
+    SKNode *node = [self nodeAtPoint:location];
+    
+    //if fire button touched, bring the rain
+    if ([node.name isEqualToString:@"pauseButtonNode"]) {
+       
+        if (self.scene.view.paused == NO) {
+            self.scene.view.paused = YES;
+            NSLog(@"paused = yes");
+            
+        }else{
+            self.scene.view.paused = NO;
+            NSLog(@"paused = no");
+            
+        }
+    }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
