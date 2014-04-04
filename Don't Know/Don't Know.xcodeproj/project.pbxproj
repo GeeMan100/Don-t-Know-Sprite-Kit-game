@@ -42,6 +42,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		381FD73B18EE7AF2001A4806 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = blip.caf; sourceTree = "<group>"; };
+		381FD73C18EE7AF2001A4806 /* brickhit.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = brickhit.caf; sourceTree = "<group>"; };
+		381FD73D18EE7AF2001A4806 /* gameover.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gameover.caf; sourceTree = "<group>"; };
 		389BC8F718ED79F0003683A4 /* computerPaddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = computerPaddle.png; sourceTree = "<group>"; };
 		389BC8F818ED79F0003683A4 /* playerPaddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playerPaddle.png; sourceTree = "<group>"; };
 		389BC8FB18ED9022003683A4 /* greenBall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greenBall.png; sourceTree = "<group>"; };
@@ -155,6 +158,9 @@
 		38FF6A1618ED5AB800109256 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				381FD73B18EE7AF2001A4806 /* blip.caf */,
+				381FD73C18EE7AF2001A4806 /* brickhit.caf */,
+				381FD73D18EE7AF2001A4806 /* gameover.caf */,
 				389BC8FB18ED9022003683A4 /* greenBall.png */,
 				389BC8F718ED79F0003683A4 /* computerPaddle.png */,
 				389BC8F818ED79F0003683A4 /* playerPaddle.png */,

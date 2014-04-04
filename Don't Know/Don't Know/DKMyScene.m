@@ -40,7 +40,7 @@ static const uint32_t topEdgeCategory    = 32;
     if (self.bannerIsNotVisible)
     {
         [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-        // Assumes the banner view is placed at the bottom of the screen.
+        // Assumes the banner view is placed at the top of the screen.
         banner.frame                     = CGRectOffset(banner.frame, 0, 0);
         [UIView commitAnimations];
         self.bannerIsNotVisible          = NO;
@@ -50,7 +50,7 @@ static const uint32_t topEdgeCategory    = 32;
     if (!self.bannerIsNotVisible)
     {
         [UIView beginAnimations:@"animateAdBannerOn" context:NULL];
-        // Assumes the banner view is just off the bottom of the screen.
+        // Assumes the banner view is just off the top of the screen.
         banner.frame                     = CGRectOffset(banner.frame, 0, 0);
         [UIView commitAnimations];
         self.bannerIsNotVisible          = YES;
@@ -145,23 +145,28 @@ static const uint32_t topEdgeCategory    = 32;
     }
     
     if (notTheBall.categoryBitMask == computerCategory) {
-        //  SKAction *playSFX = [SKAction playSoundFileNamed:@"brickhit.caf" waitForCompletion:NO];
-        // [self runAction:playSFX];
-       // [notTheBall.node removeFromParent];
+        SKAction *playSFX = [SKAction playSoundFileNamed:@"brickhit.caf" waitForCompletion:NO];
+        [self runAction:playSFX];
+       
     }
     
     if (notTheBall.categoryBitMask == playerCategory) {
-        // SKAction *playSFX = [SKAction playSoundFileNamed:@"blip.caf" waitForCompletion:NO];
-        //  [self runAction:playSFX];
+         SKAction *playSFX = [SKAction playSoundFileNamed:@"blip.caf" waitForCompletion:NO];
+         [self runAction:playSFX];
         
     }
     
     if (notTheBall.categoryBitMask == bottomEdgeCategory) {
+        SKAction *playSFX = [SKAction playSoundFileNamed:@"gameover.caf" waitForCompletion:NO];
+        [self runAction:playSFX];
         EndScene *end = [EndScene sceneWithSize:self.size];
         [self.view presentScene:end transition:[SKTransition flipVerticalWithDuration:0.5]];
         
+        
     }
     if (notTheBall.categoryBitMask == topEdgeCategory) {
+        SKAction *playSFX = [SKAction playSoundFileNamed:@"gameover.caf" waitForCompletion:NO];
+        [self runAction:playSFX];
         EndScene *end = [EndScene sceneWithSize:self.size];
         [self.view presentScene:end transition:[SKTransition doorsCloseHorizontalWithDuration:0.5]];
         
@@ -208,6 +213,7 @@ static const uint32_t topEdgeCategory    = 32;
         myLabelTime.position = CGPointMake(screenRect.size.width - 50, screenRect.size.height - 100);
         [self addChild:myLabelTime];
         
+        
     }
     return self;
 }
@@ -251,12 +257,12 @@ static const uint32_t topEdgeCategory    = 32;
     if (myTime == 32) {
         player.xScale = 0.6;
     }
-    if (myTime == 90) {
-        
-        SKScene *victory = [Victor sceneWithSize:self.size];
-        [self.view presentScene:victory transition:[SKTransition doorsCloseHorizontalWithDuration:0.4]];
-    }
-  
+//    if (myTime == 90) {
+//        
+//        SKScene *victory = [Victor sceneWithSize:self.size];
+//        [self.view presentScene:victory transition:[SKTransition doorsCloseHorizontalWithDuration:0.4]];
+//    }
+//  
 }
 
 -(void)update:(CFTimeInterval)currentTime {
